@@ -27,7 +27,10 @@ func TestThrottleMax1(t *testing.T) {
 	throttle := Throttle(effector, max, max, time.Second)
 
 	for i := 0; i < 100; i++ {
-		throttle(ctx)
+		_, err := throttle(ctx)
+		if err != nil {
+			t.Error("throttle returns nil")
+		}
 	}
 
 	if callsCounter == 0 {
@@ -50,7 +53,10 @@ func TestThrottleMax10(t *testing.T) {
 	throttle := Throttle(effector, max, max, time.Second)
 
 	for i := 0; i < 100; i++ {
-		throttle(ctx)
+		_, err := throttle(ctx)
+		if err != nil {
+			t.Error("throttle returns nil")
+		}
 	}
 
 	if callsCounter == 0 {

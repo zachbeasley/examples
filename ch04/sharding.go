@@ -2,6 +2,7 @@ package ch04
 
 import (
 	"crypto/sha1"
+	"errors"
 	"sync"
 )
 
@@ -49,6 +50,20 @@ func (m ShardedMap) Delete(key string) {
 	defer shard.Unlock()
 
 	delete(shard.m, key)
+}
+
+// Contains accepts a key and returns the index of the map, or nil if the
+// value doesn't exist
+func (m ShardedMap) Contains(key string) (int, error) {
+	shard := m.getShard(key)
+	shard.RLock()
+	defer shard.RUnlock()
+
+	if x := shard.m[key]; x != nil {
+		return x.(int), nil
+	} else {
+		return 0, errors.New("no value")
+	}
 }
 
 // Get retrieves and returns a value from the map. If the value doesn't exist,

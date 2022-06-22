@@ -161,7 +161,7 @@ func TestFutureCancel(t *testing.T) {
 }
 
 func elapsedCheck(t *testing.T, start time.Time, seconds int) {
-	elapsed := int(time.Now().Sub(start).Seconds())
+	elapsed := int(time.Since(start).Seconds())
 
 	if seconds != elapsed {
 		t.Errorf("expected %d seconds; got %d\n", seconds, elapsed)
